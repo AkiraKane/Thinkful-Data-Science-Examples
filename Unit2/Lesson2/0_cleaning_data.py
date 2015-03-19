@@ -14,10 +14,11 @@ data = pd.read_csv('train.csv')
 # keep only rows where Fare in a finite number
 r = data[np.isfinite(data['Fare'])]
 # remove outliers above 100 and less than or equal to 0
-r = r['Fare'][(r['Fare'] <= 300) & (r['Fare'] > 0)]
+r = r['Fare'][(r['Fare'] <= 100) & (r['Fare'] > 0)]
 
 # plot figure in a hist and QQ plot
 plt.figure()
+data.boxplot(column="Fare")
 plt.subplots()
 stats.probplot(r, dist='norm', plot=plt)
 plt.subplots()
