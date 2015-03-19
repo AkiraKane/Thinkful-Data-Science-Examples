@@ -43,10 +43,11 @@ with con:
     '''
         RETRIEVING RAW DATA FROM SQLITE DATABASE
     '''
+    # execute your search command
     cur.execute("SELECT * FROM cities")
-
+    # grab the results
     rows = cur.fetchall()
-
+    # iterate over the results, printing out each to std output with print
     for row in rows:
         print row
 
@@ -64,4 +65,3 @@ with con:
     df = pd.DataFrame(rows, columns=cols)
     # display the first bit of data from the pandas DataFrame
     print df.head()
-
