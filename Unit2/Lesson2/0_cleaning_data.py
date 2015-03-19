@@ -1,26 +1,17 @@
-# For this lesson I will be diverging from the Thinkful material and using
-# the Kaggle Titanic dataset instead (train.csv). This is a far dirtier and,
-# in many ways, more realistic exmaple of the datasets in you might encounter.
-# I highly encourage you all to dl and work along with these examples as well as
-# working the lesson exercises.
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy.stats as stats
+import collections
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # read csv file into pandas
-data = pd.read_csv('train.csv')
+data = pd.read_csv('https://spark-public.s3.amazonaws.com/dataanalysis/loansData.csv')
+data.dropna(inplace=True)
+# see the dataset makeup
+# data.head()
 
-# keep only rows where Fare in a finite number
-r = data[np.isfinite(data['Fare'])]
-# remove outliers above 100 and less than or equal to 0
-r = r['Fare'][(r['Fare'] <= 100) & (r['Fare'] > 0)]
+# count the number of instances of open credit lines
+open_credit_freq = collections.Counter(data['Open.CREDIT.Lines'])
 
-# plot figure in a hist and QQ plot
+# plot the number of open credit lines as a hist
 plt.figure()
-data.boxplot(column="Fare")
-plt.subplots()
-stats.probplot(r, dist='norm', plot=plt)
-plt.subplots()
-r.hist()
+plt.bar(open_credit_freq.keys(), open_credit_freq.values(), width=1)
 plt.show()
