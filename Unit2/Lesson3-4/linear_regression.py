@@ -1,22 +1,12 @@
+# import all the libraries that we'll need for these lessons
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.api as sm # http://statsmodels.sourceforge.net/stable/
 
-# import data into a pandas dataframe
-loansData = pd.read_csv('https://spark-public.s3.amazonaws.com/dataanalysis/loansData.csv')
-loansData.dropna(inplace=True)
-
-# check the first few records in the dataset
-loansData.head()
-
-# remove the "%" from loansData['Interest.Rate'], loansData['Debt.To.Income.Ratio']
-loansData['Interest.Rate'] = loansData['Interest.Rate'].map(lambda x: x[:-1])
-loansData['Debt.To.Income.Ratio'] = loansData['Debt.To.Income.Ratio'].map(lambda x: x[:-1])
-# remove the " months" from loansData['Loan.Length']
-loansData['Loan.Length'] = loansData['Loan.Length'].map(lambda x: x[:-7])
-# take the first number in FICO score range for loansData['FICO.Range']
-loansData['FICO.Score'] = loansData['FICO.Range'].map(lambda x: int(x.split("-")[0]))
+# imports the code from the cleaned_data.py file found in this folder
+import cleaned_data
+loansData = cleaned_data.clean_up_data()
 
 
 """
@@ -33,8 +23,8 @@ plt.show()
     LESSON 3 MATERIAL
 """
 # set a column of data to a var for easy ref (out: pandas.core.series.Series)
-intrate = loansData['Interest.Rate'].map(lambda x: float(x))
-loanamt = loansData['Amount.Requested'].map(lambda x: int(x))
+intrate = loansData['Interest.Rate']
+loanamt = loansData['Amount.Requested']
 fico = loansData['FICO.Score']
 
 # Create a numpy matrix from each of the Series, and then transpose that matrix
