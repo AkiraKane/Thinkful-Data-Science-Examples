@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import statsmodels.api as sm
+import statsmodels.api as sm # http://statsmodels.sourceforge.net/stable/
 
 # import data into a pandas dataframe
 loansData = pd.read_csv('https://spark-public.s3.amazonaws.com/dataanalysis/loansData.csv')
@@ -32,27 +32,27 @@ plt.show()
 """
     LESSON 3 MATERIAL
 """
-# set data to vars for easy ref
-intrate = loansData['Interest.Rate']
-loanamt = loansData['Amount.Requested']
+# set a column of data to a var for easy ref (out: pandas.core.series.Series)
+intrate = loansData['Interest.Rate'].map(lambda x: float(x))
+loanamt = loansData['Amount.Requested'].map(lambda x: int(x))
 fico = loansData['FICO.Score']
 
+# Create a numpy matrix from each of the Series, and then transpose that matrix
 # The dependent variable
 y = np.matrix(intrate).transpose()
-# The independent variables shaped as columns
+# The independent variables
 x1 = np.matrix(fico).transpose()
 x2 = np.matrix(loanamt).transpose()
 
-# put columns together to make an input matrix
+# put independent vars matrices together to make an input matrix
 x = np.column_stack([x1,x2])
 
-# create the linear model
+# Create the linear regression model using statsmodels library.
+# Fitting a model in statsmodels typically involves 3 easy steps:
+#   1) Use the model class to describe the model
+#   2) Fit the model using a class method
+#   3) Inspect the results using a summary method
 X = sm.add_constant(x)
-model = sm.OLS(y,X)
-f = model.fit()
-
-# Print out the results to Std out
-print 'Coefficients: ', f.params[0:2]
-print 'Intercept: ', f.params[2]
-print 'P-Values: ', f.pvalues
-print 'R-Squared: ', f.rsquared
+model = sm.OLS(y,X) # Describe model
+results = model.fit() # Fit model
+print results.summary() # Summarize model
